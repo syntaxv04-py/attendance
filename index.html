@@ -126,7 +126,21 @@
         border: 1px solid var(--border);
         cursor: pointer;
     }
+    #saveImageBtn {
+    background: transparent;
+    color: var(--text);
+}
 
+#saveImageBtn:hover {
+    background: rgba(177,186,196,0.12);
+}
+#saveImageBtn {
+    border: 1px solid var(--border);
+    font-weight: 500;
+}
+#saveImageBtn {
+    margin-top: 10px;
+}
     #addStudent {
         background: var(--accent);
         color: #fff;
@@ -135,18 +149,7 @@
 
     #addStudent:hover {
         background: var(--accent-hover);
-    }
-
-    #printBtn {
-        background: transparent;
-        color: var(--text);
-    }
-
-    #printBtn:hover {
-        background: rgba(177,186,196,0.12);
-    }
-
-    
+    }   
     table {
         width: 100%;
         border-collapse: collapse;
@@ -167,26 +170,6 @@
 
     tr:hover td {
         background: rgba(177,186,196,0.06);
-    }
-
-    
-    @media print {
-        body {
-            background: white;
-            color: black;
-            padding: 0;
-            display: block;
-        }
-
-        .input-section,
-        .logo {
-            display: none;
-        }
-
-        .attendance-sheet {
-            border: none;
-            width: 100%;
-        }
     }
     @media (max-width: 900px) {
 
@@ -248,29 +231,62 @@
     line-height: 1.4;
 }
 
-/* PRINT MODE */
-@media print {
-    .logo {
-        display: none;
+    h2 {
+        margin-top: 0;
     }
 
+.print-mode {
+    background: white;
+    color: black;
+}
+
+/* for actual print */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* logo behavior */
+.print-logo {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.print-logo img {
+    width: 60px;
+}
+
+/* apply print layout */
+@media print {
     .print-logo {
         display: flex;
     }
 
-    h2 {
-        margin-top: 0;
-    }
-}
-@media print {
-    td {
-        border: none !important;
+    .input-section,
+    .logo {
+        display: none;
     }
 
-    th {
-        border-bottom: 1px solid #000;
+    table, th, td {
+        border: none !important;
     }
 }
+
+/* image export mode (html2canvas) */
+.print-mode .print-logo {
+    display: flex;
+}
+
+.print-mode table,
+.print-mode th,
+.print-mode td {
+    border: none !important;
+}
+
 
 </style>
 
@@ -278,7 +294,7 @@
 <body>
     <div class="logo">
         <img src="logo.png">
-        <a href="#">Institute of Information and Communications Technology</a>
+        <a href="https://web.facebook.com/profile.php?id=100083347643871" target="blank">Institute of Information and Communications Technology</a>
     </div>
     <br>
     <div class="input-section">
@@ -290,19 +306,16 @@
 
 
         <button id="addStudent">Add Student</button>
-        <button id="printBtn">Print Attendance</button>
+        <button id="saveImageBtn">Save as Image</button>
     </div>
-
-    <div class="print-logo">
+    <div class="attendance-sheet" id="attendanceSheet">
+        <div class="print-logo">
     <img src="logo.png" alt="Logo">
     <div class="print-title">
         Institute of Information and Communications Technology<br>
         <strong>Isabela State University - Roxas Campus</strong>
     </div>
 </div>
-
-
-    <div class="attendance-sheet" id="attendanceSheet">
     <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
 
     
@@ -343,7 +356,7 @@
             "25-0209": "Ivy C. Del Rosario",
             "25-0171": "Francis John A. Pinto",
             "25-0752": "Nika Joy V. Santos",
-            "25–0310": "Mark Ruel N. Santiago",
+            "25-0310": "Mark Ruel N. Santiago",
             "25-0293": "Kezia E. Balubar",
             "25-0359": "Amelia Rose T. Julian",
             "25-0349": "Prince Jhon Olvidado",
@@ -375,7 +388,6 @@
         // Elements
         const studentIdInput = document.getElementById('studentId');
         const addStudentBtn = document.getElementById('addStudent');
-        const printBtn = document.getElementById('printBtn');
         const displayDate = document.getElementById('displayDate');
         const attendeeList = document.getElementById('attendeeList');
 
@@ -429,13 +441,33 @@ studentIdInput.addEventListener('keydown', (e) => {
         addStudent();
     }
 });
-        // Print event
-        printBtn.addEventListener('click', () => {
-            window.print();
-        });
-
         // Initial update
         updateSheet();
+        const saveImageBtn = document.getElementById('saveImageBtn');
+
+saveImageBtn.addEventListener('click', async () => {
+    const sheet = document.getElementById('attendanceSheet');
+
+    // enable print-equivalent layout
+    document.body.classList.add('print-mode');
+    sheet.classList.add('print-mode');
+
+    const canvas = await html2canvas(sheet, {
+        scale: 2,
+        backgroundColor: '#ffffff'
+    });
+
+    document.body.classList.remove('print-mode');
+    sheet.classList.remove('print-mode');
+
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = `BSIT_1C_Attendance_${new Date().toISOString().slice(0,10)}.png`;
+    link.click();
+});
+
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 </body>
 </html>
