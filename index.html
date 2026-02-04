@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -214,7 +214,7 @@
         // Mock database: Maps student IDs to names (expand as needed)
         const studentDatabase = {
             "25-0350": "Christopher I. Madamba",
-            "67890": "Jane Smith",
+            "25-0302": "Rose E. Cañeza",
             "11111": "Alice Johnson",
             "22222": "Bob Brown"
         };
@@ -254,7 +254,12 @@
             tr.innerHTML = `
                 <td>${studentDatabase[id]}</td>
                 <td>${id}</td>
-                <td>${new Date().toLocaleTimeString()}</td>
+                <td>${new Date().toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            })}</td>
+
             `;
             attendeeList.appendChild(tr);
             studentIdInput.value = ''; // Clear input
