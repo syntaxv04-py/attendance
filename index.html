@@ -177,6 +177,50 @@
             width: 100%;
         }
     }
+    @media (max-width: 900px) {
+
+    body {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .logo {
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .input-section,
+    .attendance-sheet {
+        width: 100%;
+        min-height: auto;
+        padding: 16px;
+    }
+
+    .attendance-sheet {
+        max-width: 100%;
+    }
+    .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    }
+
+    h2 {
+        font-size: 16px;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    input,
+    button {
+        font-size: 16px; /* better for touch */
+        padding: 10px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+}
 </style>
 
 </head>
@@ -189,14 +233,20 @@
     <div class="input-section">
         <h2>BSIT 1C Attendance</h2>
         <label for="studentId">Student ID:</label>
-        <input type="text" id="studentId" placeholder="e.g., 12345">
+        <input type="text" id="studentId"
+       inputmode="numeric"
+       placeholder="e.g., 25-0350">
+
 
         <button id="addStudent">Add Student</button>
         <button id="printBtn">Print Attendance</button>
     </div>
 
     <div class="attendance-sheet" id="attendanceSheet">
-        <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
+    <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
+
+    <!-- 👇 ADD THIS WRAPPER -->
+    <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -210,6 +260,8 @@
             </tbody>
         </table>
     </div>
+</div>
+
 
     <script>
         // Mock database: Maps student IDs to names (expand as needed)
