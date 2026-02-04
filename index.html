@@ -3,190 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attendance System</title>
+    <title>BSIT 1C Attendance</title>
     <style>
+    :root {
+        --bg: #0d1117;
+        --card: #161b22;
+        --border: #30363d;
+        --text: #c9d1d9;
+        --muted: #8b949e;
+        --accent: #238636;
+        --accent-hover: #2ea043;
+        --danger: #f85149;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 60px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                     Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+    /* Logo */
+    .logo {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo img {
+        width: 40px;
+    }
+
+    .logo a {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+    }
+
+    /* Cards */
+    .input-section,
+    .attendance-sheet {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .input-section {
+        width: 38%;
+        padding: 24px;
+    }
+
+    .attendance-sheet {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 24px;
+    }
+
+    h2 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    label {
+        display: block;
+        margin-top: 14px;
+        font-size: 14px;
+        color: var(--muted);
+    }
+
+    input {
+        width: 100%;
+        margin-top: 6px;
+        padding: 8px 10px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        font-size: 14px;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    button {
+        width: 100%;
+        margin-top: 14px;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+    }
+
+    #addStudent {
+        background: var(--accent);
+        color: #fff;
+        border-color: rgba(240,246,252,0.1);
+    }
+
+    #addStudent:hover {
+        background: var(--accent-hover);
+    }
+
+    #printBtn {
+        background: transparent;
+        color: var(--text);
+    }
+
+    #printBtn:hover {
+        background: rgba(177,186,196,0.12);
+    }
+
+    /* Table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--muted);
+    }
+
+    tr:hover td {
+        background: rgba(177,186,196,0.06);
+    }
+
+    /* Print */
+    @media print {
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        #scanner-container {
-            width: 50%;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-        #scanner-container video {
-            width: 100%;
-            height: auto;
-        }
-        #manual-input {
-            margin-top: 10px;
-            padding: 5px;
-            width: 100%;
-        }
-        #attendance-list {
-            width: 40%;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
-        #attendance-list h2 {
-            margin-top: 0;
-        }
-        .attendance-item {
-            margin-bottom: 10px;
-            padding: 5px;
-            border-bottom: 1px solid #eee;
-        }
-        .attendance-item strong {
+            background: white;
+            color: black;
+            padding: 0;
             display: block;
         }
-        .attendance-item small {
-            color: #666;
+
+        .input-section,
+        .logo {
+            display: none;
         }
-    </style>
+
+        .attendance-sheet {
+            border: none;
+            width: 100%;
+        }
+    }
+</style>
+
 </head>
 <body>
-    <div id="scanner-container">
-        <h2>Scanner</h2>
-        <video id="video" autoplay></video>
-        <canvas id="canvas" style="display: none;"></canvas>
-        <input type="text" id="manual-input" placeholder="Manual Student Number (e.g., 25-0350)">
+    <div class="logo">
+        <img src="logo.png">
+        <a href="#">Institute of Information and Communications Technology</a>
     </div>
-    <div id="attendance-list">
-        <h2>Attendance List</h2>
-        <div id="list"></div>
+    <br>
+    <div class="input-section">
+        <h2>BSIT 1C Attendance</h2>
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" placeholder="e.g., 12345">
+
+        <button id="addStudent">Add Student</button>
+        <button id="printBtn">Print Attendance</button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+    <div class="attendance-sheet" id="attendanceSheet">
+        <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Student ID</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="attendeeList">
+                <!-- Rows will be added here -->
+            </tbody>
+        </table>
+    </div>
+
     <script>
-        // Predefined student data (student number to name mapping)
-        const students = {
+        // Mock database: Maps student IDs to names (expand as needed)
+        const studentDatabase = {
             "25-0350": "Christopher I. Madamba",
-            "12-0456": "Jane Doe",  // Example additions
-            "34-0789": "John Smith"
+            "67890": "Jane Smith",
+            "11111": "Alice Johnson",
+            "22222": "Bob Brown"
         };
 
-        // Array to hold attendance records (in-memory only)
-        let attendance = [];
-        const scannedSet = new Set(); // Prevent duplicates in session
+        // Elements
+        const studentIdInput = document.getElementById('studentId');
+        const addStudentBtn = document.getElementById('addStudent');
+        const printBtn = document.getElementById('printBtn');
+        const displayDate = document.getElementById('displayDate');
+        const attendeeList = document.getElementById('attendeeList');
 
-        // Function to update the attendance list display
-        function updateAttendanceList() {
-            const listElement = document.getElementById('list');
-            listElement.innerHTML = '';
-            attendance.forEach(record => {
-                const item = document.createElement('div');
-                item.className = 'attendance-item';
-                item.innerHTML = `
-                    <strong>${record.name} (ID: ${record.studentNumber})</strong>
-                    <small>Scanned at: ${record.timestamp}</small>
-                `;
-                listElement.appendChild(item);
-            });
+        // Function to update the attendance sheet (only date now)
+        function updateSheet() {
+            displayDate.textContent = new Date().toLocaleDateString(); // Current date
         }
 
-        // Manual input handler for testing
-        document.getElementById('manual-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const code = this.value.trim();
-                if (students[code]) {
-                    addToAttendance(code);
-                    this.value = ''; // Clear input
-                } else {
-                    alert('Unknown student number.');
-                }
+        // Add student event
+        addStudentBtn.addEventListener('click', () => {
+            const id = studentIdInput.value.trim();
+            if (!id) {
+                alert('Please enter a student ID.');
+                return;
             }
+            if (!studentDatabase[id]) {
+                alert('Student ID not found in database.');
+                return;
+            }
+            // Check if already added
+            const existing = Array.from(attendeeList.children).some(tr => tr.dataset.id === id);
+            if (existing) {
+                alert('Student already added.');
+                return;
+            }
+            // Add to table
+            const tr = document.createElement('tr');
+            tr.dataset.id = id;
+            tr.innerHTML = `
+                <td>${studentDatabase[id]}</td>
+                <td>${id}</td>
+                <td>${new Date().toLocaleTimeString()}</td>
+            `;
+            attendeeList.appendChild(tr);
+            studentIdInput.value = ''; // Clear input
+            updateSheet(); // Refresh sheet
         });
 
-        // Function to add to attendance (with duplicate check)
-        function addToAttendance(studentNumber) {
-            if (scannedSet.has(studentNumber)) return; // Skip duplicates
-            scannedSet.add(studentNumber);
-            const now = new Date();
-            const timestamp = now.toLocaleString();
-            attendance.push({
-                studentNumber: studentNumber,
-                name: students[studentNumber],
-                timestamp: timestamp
-            });
-            updateAttendanceList();
-            console.log(`Added: ${students[studentNumber]} (${studentNumber}) at ${timestamp}`);
-        }
+        // Print event
+        printBtn.addEventListener('click', () => {
+            window.print();
+        });
 
-        // Initialize camera and QuaggaJS
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(stream => {
-                const video = document.getElementById('video');
-                video.srcObject = stream;
-                video.play();
-
-                // Initialize QuaggaJS for barcode scanning
-                Quagga.init({
-                    inputStream: {
-                        name: "Live",
-                        type: "LiveStream",
-                        target: video,
-                        constraints: {
-                            width: 640,
-                            height: 480,
-                            facingMode: "environment"
-                        }
-                    },
-                    locator: {
-                        patchSize: "medium",
-                        halfSample: true
-                    },
-                    numOfWorkers: 2,
-                    decoder: {
-                        readers: ["code_128_reader", "ean_reader", "upc_reader", "code_39_reader"] // More barcode types
-                    },
-                    locate: true
-                }, function(err) {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    Quagga.start();
-                });
-
-                // On barcode detection
-                Quagga.onDetected(function(result) {
-                    const code = result.codeResult.code;
-                    if (students[code]) {
-                        addToAttendance(code);
-                    } else {
-                        console.log(`Unknown barcode: ${code}`);
-                    }
-                });
-
-                // OCR fallback: Scan for plain numbers every 2 seconds
-                setInterval(() => {
-                    const canvas = document.getElementById('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    ctx.drawImage(video, 0, 0);
-                    Tesseract.recognize(canvas, 'eng', { logger: m => console.log(m) })
-                        .then(({ data: { text } }) => {
-                            // Extract numbers with possible hyphens (e.g., 25-0350)
-                            const matches = text.match(/\d{2}-\d{4}|\d+/g);
-                            if (matches) {
-                                matches.forEach(match => {
-                                    if (students[match]) {
-                                        addToAttendance(match);
-                                    }
-                                });
-                            }
-                        })
-                        .catch(err => console.error('OCR Error:', err));
-                }, 2000); // Run every 2 seconds
-            })
-            .catch(err => {
-                console.error('Error accessing camera:', err);
-                alert('Camera access denied or not available.');
-            });
+        // Initial update
+        updateSheet();
     </script>
 </body>
 </html>
