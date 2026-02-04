@@ -232,6 +232,46 @@
         font-size: 13px;
     }
 }
+.print-logo {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.print-logo img {
+    width: 60px;
+}
+
+.print-title {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* PRINT MODE */
+@media print {
+    .logo {
+        display: none;
+    }
+
+    .print-logo {
+        display: flex;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+}
+@media print {
+    td {
+        border: none !important;
+    }
+
+    th {
+        border-bottom: 1px solid #000;
+    }
+}
+
 </style>
 
 </head>
@@ -252,6 +292,15 @@
         <button id="addStudent">Add Student</button>
         <button id="printBtn">Print Attendance</button>
     </div>
+
+    <div class="print-logo">
+    <img src="logo.png" alt="Logo">
+    <div class="print-title">
+        Institute of Information and Communications Technology<br>
+        <strong>Isabela State University - Roxas Campus</strong>
+    </div>
+</div>
+
 
     <div class="attendance-sheet" id="attendanceSheet">
     <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
@@ -336,40 +385,50 @@
         }
 
         // Add student event
-        addStudentBtn.addEventListener('click', () => {
-            const id = studentIdInput.value.trim();
-            if (!id) {
-                alert('Please enter a student ID.');
-                return;
-            }
-            if (!studentDatabase[id]) {
-                alert('Student ID not found in database.');
-                return;
-            }
-            // Check if already added
-            const existing = Array.from(attendeeList.children).some(tr => tr.dataset.id === id);
-            if (existing) {
-                alert('Student already added.');
-                return;
-            }
-            // Add to table
-            const tr = document.createElement('tr');
-            tr.dataset.id = id;
-            tr.innerHTML = `
-                <td>${studentDatabase[id]}</td>
-                <td>${id}</td>
-                <td>${new Date().toLocaleTimeString([], {
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            })}</td>
+        function addStudent() {
+    const id = studentIdInput.value.trim();
+    if (!id) {
+        alert('Please enter a student ID.');
+        return;
+    }
+    if (!studentDatabase[id]) {
+        alert('Student ID not found in database.');
+        return;
+    }
 
-            `;
-            attendeeList.appendChild(tr);
-            studentIdInput.value = ''; // Clear input
-            updateSheet(); // Refresh sheet
-        });
+    const existing = Array.from(attendeeList.children)
+        .some(tr => tr.dataset.id === id);
 
+    if (existing) {
+        alert('Student already added.');
+        return;
+    }
+
+    const tr = document.createElement('tr');
+    tr.dataset.id = id;
+    tr.innerHTML = `
+        <td>${studentDatabase[id]}</td>
+        <td>${id}</td>
+        <td>${new Date().toLocaleTimeString([], {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        })}</td>
+    `;
+
+    attendeeList.appendChild(tr);
+    studentIdInput.value = '';
+    updateSheet();
+}
+addStudentBtn.addEventListener('click', addStudent);
+
+// Add student via Enter key (desktop + mobile)
+studentIdInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        addStudent();
+    }
+});
         // Print event
         printBtn.addEventListener('click', () => {
             window.print();
@@ -380,5 +439,3 @@
     </script>
 </body>
 </html>
-
-
