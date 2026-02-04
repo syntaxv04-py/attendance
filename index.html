@@ -44,7 +44,7 @@
         gap: 30px;
     }
 
-    /* Logo */
+    
     .logo {
         position: absolute;
         top: 20px;
@@ -65,7 +65,7 @@
         text-decoration: none;
     }
 
-    /* Cards */
+    
     .input-section,
     .attendance-sheet {
         background: var(--card);
@@ -146,7 +146,7 @@
         background: rgba(177,186,196,0.12);
     }
 
-    /* Table */
+    
     table {
         width: 100%;
         border-collapse: collapse;
@@ -169,7 +169,7 @@
         background: rgba(177,186,196,0.06);
     }
 
-    /* Print */
+    
     @media print {
         body {
             background: white;
@@ -224,7 +224,7 @@
 
     input,
     button {
-        font-size: 16px; /* better for touch */
+        font-size: 16px; 
         padding: 10px;
     }
 
@@ -246,7 +246,7 @@
         <label for="studentId">Student ID:</label>
         <input type="text" id="studentId"
        inputmode="numeric"
-       placeholder="e.g., 25-0350">
+       placeholder="Enter Student ID">
 
 
         <button id="addStudent">Add Student</button>
@@ -256,7 +256,7 @@
     <div class="attendance-sheet" id="attendanceSheet">
     <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
 
-    <!-- 👇 ADD THIS WRAPPER -->
+    
     <div class="table-wrapper">
         <table>
             <thead>
@@ -267,7 +267,7 @@
                 </tr>
             </thead>
             <tbody id="attendeeList">
-                <!-- Rows will be added here -->
+                
             </tbody>
         </table>
     </div>
@@ -343,3 +343,4 @@
     </script>
 </body>
 </html>
+
