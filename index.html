@@ -20,6 +20,11 @@
             width: 100%;
             height: auto;
         }
+        #manual-input {
+            margin-top: 10px;
+            padding: 5px;
+            width: 100%;
+        }
         #attendance-list {
             width: 40%;
             border: 1px solid #ccc;
@@ -46,6 +51,7 @@
         <h2>Scanner</h2>
         <video id="video" autoplay></video>
         <canvas id="canvas" style="display: none;"></canvas>
+        <input type="text" id="manual-input" placeholder="Manual Student Number (e.g., 25-0350)">
     </div>
     <div id="attendance-list">
         <h2>Attendance List</h2>
@@ -53,17 +59,18 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
     <script>
         // Predefined student data (student number to name mapping)
         const students = {
             "25-0350": "Christopher I. Madamba",
-            "67890": "Jane Smith",
-            "11111": "Alice Johnson",
-            "22222": "Bob Brown"
+            "12-0456": "Jane Doe",  // Example additions
+            "34-0789": "John Smith"
         };
 
-        // Array to hold attendance records
+        // Array to hold attendance records (in-memory only)
         let attendance = [];
+        const scannedSet = new Set(); // Prevent duplicates in session
 
         // Function to update the attendance list display
         function updateAttendanceList() {
@@ -80,6 +87,34 @@
             });
         }
 
+        // Manual input handler for testing
+        document.getElementById('manual-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const code = this.value.trim();
+                if (students[code]) {
+                    addToAttendance(code);
+                    this.value = ''; // Clear input
+                } else {
+                    alert('Unknown student number.');
+                }
+            }
+        });
+
+        // Function to add to attendance (with duplicate check)
+        function addToAttendance(studentNumber) {
+            if (scannedSet.has(studentNumber)) return; // Skip duplicates
+            scannedSet.add(studentNumber);
+            const now = new Date();
+            const timestamp = now.toLocaleString();
+            attendance.push({
+                studentNumber: studentNumber,
+                name: students[studentNumber],
+                timestamp: timestamp
+            });
+            updateAttendanceList();
+            console.log(`Added: ${students[studentNumber]} (${studentNumber}) at ${timestamp}`);
+        }
+
         // Initialize camera and QuaggaJS
         navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
             .then(stream => {
@@ -87,7 +122,7 @@
                 video.srcObject = stream;
                 video.play();
 
-                // Initialize QuaggaJS
+                // Initialize QuaggaJS for barcode scanning
                 Quagga.init({
                     inputStream: {
                         name: "Live",
@@ -105,7 +140,7 @@
                     },
                     numOfWorkers: 2,
                     decoder: {
-                        readers: ["code_128_reader", "ean_reader", "upc_reader"] // Common barcode types
+                        readers: ["code_128_reader", "ean_reader", "upc_reader", "code_39_reader"] // More barcode types
                     },
                     locate: true
                 }, function(err) {
@@ -120,20 +155,33 @@
                 Quagga.onDetected(function(result) {
                     const code = result.codeResult.code;
                     if (students[code]) {
-                        const now = new Date();
-                        const timestamp = now.toLocaleString();
-                        attendance.push({
-                            studentNumber: code,
-                            name: students[code],
-                            timestamp: timestamp
-                        });
-                        updateAttendanceList();
-                        // Optional: Provide feedback (e.g., beep or alert)
-                        console.log(`Scanned: ${students[code]} (${code}) at ${timestamp}`);
+                        addToAttendance(code);
                     } else {
-                        console.log(`Unknown student number: ${code}`);
+                        console.log(`Unknown barcode: ${code}`);
                     }
                 });
+
+                // OCR fallback: Scan for plain numbers every 2 seconds
+                setInterval(() => {
+                    const canvas = document.getElementById('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0);
+                    Tesseract.recognize(canvas, 'eng', { logger: m => console.log(m) })
+                        .then(({ data: { text } }) => {
+                            // Extract numbers with possible hyphens (e.g., 25-0350)
+                            const matches = text.match(/\d{2}-\d{4}|\d+/g);
+                            if (matches) {
+                                matches.forEach(match => {
+                                    if (students[match]) {
+                                        addToAttendance(match);
+                                    }
+                                });
+                            }
+                        })
+                        .catch(err => console.error('OCR Error:', err));
+                }, 2000); // Run every 2 seconds
             })
             .catch(err => {
                 console.error('Error accessing camera:', err);
@@ -141,5 +189,4 @@
             });
     </script>
 </body>
-
 </html>
