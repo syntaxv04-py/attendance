@@ -239,8 +239,28 @@
     background: white;
     color: black;
 }
+/* A4 size for image export */
+.print-mode #attendanceSheet {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 24mm;
+    margin: 0 auto;
+    background: white;
+    color: black;
+    box-sizing: border-box;
+}
 
-/* for actual print */
+/* Prevent mobile stacking during export */
+.print-mode body {
+    display: block;
+}
+
+/* Lock desktop table behavior */
+.print-mode table {
+    width: 100%;
+    table-layout: fixed;
+}
+
 @media print {
     body {
         background: white;
@@ -448,14 +468,32 @@ studentIdInput.addEventListener('keydown', (e) => {
 saveImageBtn.addEventListener('click', async () => {
     const sheet = document.getElementById('attendanceSheet');
 
-    // enable print-equivalent layout
+    // save original viewport
+    const originalWidth = document.body.style.width;
+
+    // force desktop width
+    document.body.style.width = '210mm';
+
     document.body.classList.add('print-mode');
     sheet.classList.add('print-mode');
 
     const canvas = await html2canvas(sheet, {
-        scale: 2,
-        backgroundColor: '#ffffff'
+        scale: 3,
+        backgroundColor: '#ffffff',
+        windowWidth: sheet.scrollWidth
     });
+
+    document.body.classList.remove('print-mode');
+    sheet.classList.remove('print-mode');
+
+    document.body.style.width = originalWidth;
+
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.download = `BSIT_1C_Attendance_${new Date().toISOString().slice(0,10)}.png`;
+    link.click();
+});
+
 
     document.body.classList.remove('print-mode');
     sheet.classList.remove('print-mode');
@@ -464,7 +502,6 @@ saveImageBtn.addEventListener('click', async () => {
     link.href = canvas.toDataURL('image/png');
     link.download = `BSIT_1C_Attendance_${new Date().toISOString().slice(0,10)}.png`;
     link.click();
-});
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
