@@ -1,188 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSIT 1C Flag Ceremony Attendance</title>
-
+ 
 <meta property="og:title" content="BSIT 1C Attendance System">
 <meta property="og:description" content="A simple web-based attendance system for BSIT 1C students.">
 <meta property="og:image" content="https://syntaxv04-py.github.io/attendance/preview.png">
 <meta property="og:url" content="https://syntaxv04-py.github.io/attendance/">
 <meta property="og:type" content="website">
 
+
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" type="image/png" href="icon.png">
 
-<style>
-:root {
-    --bg: #0d1117;
-    --card: #161b22;
-    --border: #30363d;
-    --text: #c9d1d9;
-    --muted: #8b949e;
-    --accent: #238636;
-    --accent-hover: #2ea043;
-    --danger: #f85149;
-}
+    <link rel="icon" type="image/png" href="icon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSIT 1C Flag Ceremony Attendance</title>
+    <style>
+    :root {
+        --bg: #0d1117;
+        --card: #161b22;
+        --border: #30363d;
+        --text: #c9d1d9;
+        --muted: #8b949e;
+        --accent: #238636;
+        --accent-hover: #2ea043;
+        --danger: #f85149;
+    }
 
-* {
-    box-sizing: border-box;
-}
+    * {
+        box-sizing: border-box;
+    }
 
-body {
-    margin: 0;
-    padding: 60px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    display: flex;
-    justify-content: space-between;
-    gap: 30px;
-}
+    body {
+        margin: 0;
+        padding: 60px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                     Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+    }
 
-.logo {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
+    
+    .logo {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-.logo img {
-    width: 40px;
-}
+    .logo img {
+        width: 40px;
+    }
 
-.logo a {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-    text-decoration: none;
-}
+    .logo a {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+    }
 
-.input-section,
-.attendance-sheet {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-}
+    
+    .input-section,
+    .attendance-sheet {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
 
-.input-section {
-    width: 38%;
-    height: 260px;
-    padding: 24px;
-}
+    .input-section {
+        width: 38%;
+        height: 260px;
+        padding: 24px;
+    }
 
-.attendance-sheet {
-    width: 210mm;
-    padding: 24px;
-}
+    .attendance-sheet {
+        width: 210mm;
+        min-height: auto;
+        padding: 24px;
+    }
 
-h2 {
-    margin: 0 0 16px 0;
-    font-size: 18px;
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-}
+    h2 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+    }
 
-label {
-    display: block;
-    margin-top: 14px;
-    font-size: 14px;
-    color: var(--muted);
-}
+    label {
+        display: block;
+        margin-top: 14px;
+        font-size: 14px;
+        color: var(--muted);
+    }
 
-input {
-    width: 100%;
-    margin-top: 6px;
-    padding: 8px 10px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    font-size: 14px;
-}
+    input {
+        width: 100%;
+        margin-top: 6px;
+        padding: 8px 10px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        font-size: 14px;
+    }
 
-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent);
-}
+    input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+    }
 
-button {
-    width: 100%;
-    margin-top: 14px;
-    padding: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    cursor: pointer;
-}
-
-#saveImageBtn {
+    button {
+        width: 100%;
+        margin-top: 14px;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+    }
+    #saveImageBtn {
     background: transparent;
     color: var(--text);
-    border: 1px solid var(--border);
-    font-weight: 500;
-    margin-top: 10px;
 }
 
 #saveImageBtn:hover {
     background: rgba(177,186,196,0.12);
 }
-
-#addStudent {
-    background: var(--accent);
-    color: #fff;
-    border-color: rgba(240,246,252,0.1);
+#saveImageBtn {
+    border: 1px solid var(--border);
+    font-weight: 500;
 }
-
-#addStudent:hover {
-    background: var(--accent-hover);
+#saveImageBtn {
+    margin-top: 10px;
 }
+    #addStudent {
+        background: var(--accent);
+        color: #fff;
+        border-color: rgba(240,246,252,0.1);
+    }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 14px;
-}
+    #addStudent:hover {
+        background: var(--accent-hover);
+    }   
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+    }
 
-th, td {
-    padding: 10px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-}
+    th, td {
+        padding: 10px;
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+    }
 
-th {
-    font-weight: 600;
-    color: var(--muted);
-}
+    th {
+        font-weight: 600;
+        color: var(--muted);
+    }
 
-tr:hover td {
-    background: rgba(177,186,196,0.06);
-}
+    tr:hover td {
+        background: rgba(177,186,196,0.06);
+    }
+    input[type="checkbox"].present:checked {
+        accent-color: var(--accent);
+    }
 
-input[type="checkbox"].present:checked {
-    accent-color: var(--accent);
-}
+    input[type="checkbox"].absent:checked {
+        accent-color: var(--danger);
+    }
 
-input[type="checkbox"].absent:checked {
-    accent-color: var(--danger);
-}
+    @media (max-width: 900px) {
 
-.input-note {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 8px;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
     body {
         flex-direction: column;
         padding: 20px;
@@ -197,16 +196,16 @@ input[type="checkbox"].absent:checked {
     .input-section,
     .attendance-sheet {
         width: 100%;
+        min-height: auto;
         padding: 16px;
     }
 
     .attendance-sheet {
         max-width: 100%;
     }
-
     .table-wrapper {
-        overflow-x: auto;
-        width: 100%;
+    overflow-x: auto;
+    width: 100%;
     }
 
     h2 {
@@ -217,7 +216,7 @@ input[type="checkbox"].absent:checked {
 
     input,
     button {
-        font-size: 16px;
+        font-size: 16px; 
         padding: 10px;
     }
 
@@ -225,8 +224,6 @@ input[type="checkbox"].absent:checked {
         font-size: 13px;
     }
 }
-
-/* Print & Print-Mode */
 .print-logo {
     display: none;
     align-items: center;
@@ -243,11 +240,14 @@ input[type="checkbox"].absent:checked {
     line-height: 1.4;
 }
 
+    h2 {
+        margin-top: 0;
+    }
+
 .print-mode {
     background: white;
     color: black;
 }
-
 .print-mode #attendanceSheet {
     width: 210mm;
     min-height: 297mm;
@@ -257,48 +257,57 @@ input[type="checkbox"].absent:checked {
     color: black;
     box-sizing: border-box;
 }
-
 .print-mode body {
     display: block;
 }
-
 .print-mode table {
     width: 100%;
     table-layout: fixed;
-    border: none !important;
+}
+.print-mode table td:first-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.print-mode table {
+    table-layout: fixed;
 }
 
+.print-mode th:first-child,
+.print-mode td:first-child {
+    width: 35%;
+}
 .print-mode table td:first-child {
     white-space: nowrap;
     overflow: visible;
 }
-
 .print-mode table td,
 .print-mode table th {
     padding: 6px 8px;
     font-size: 12px;
 }
-
 .print-mode h2 {
     margin-bottom: 10px;
 }
 
-.print-mode .print-logo {
-    display: flex;
-}
 
-.present,
-.absent {
-    pointer-events: none;
-}
-
-/* Print-specific */
 @media print {
     body {
         background: white;
         color: black;
     }
+}
+.print-logo {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
 
+.print-logo img {
+    width: 60px;
+}
+@media print {
     .print-logo {
         display: flex;
     }
@@ -312,36 +321,65 @@ input[type="checkbox"].absent:checked {
         border: none !important;
     }
 }
+.print-mode .print-logo {
+    display: flex;
+}
+
+.print-mode table,
+.print-mode th,
+.print-mode td {
+    border: none !important;
+}
+
+.present,
+.absent {
+    pointer-events: none;
+}
+input[type="checkbox"].present:checked {
+    accent-color: var(--accent);
+}
+input[type="checkbox"].absent {
+    accent-color: var(--border);
+}
+.input-note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+
 </style>
+
 </head>
 <body oncontextmenu="return false;">
 
-<div class="logo">
-    <img src="logo.png">
-    <a href="https://web.facebook.com/profile.php?id=100083347643871" target="blank">
-        Institute of Information and Communications Technology
-    </a>
-</div>
-
-<div class="input-section">
-    <h2>BSIT 1C Attendance</h2>
-    <label for="studentId">Student ID:</label>
-    <input type="text" id="studentId" inputmode="numeric" placeholder="Enter Student ID">
-    <button id="addStudent">Add Student</button>
-    <button id="saveImageBtn">Save Image</button>
-</div>
-
-<div class="attendance-sheet" id="attendanceSheet">
-    <div class="print-logo">
-        <img src="logo.png" alt="Logo">
-        <div class="print-title">
-            <strong>Institute of Information and Communications Technology</strong><br>
-            Isabela State University - Roxas Campus
-        </div>
+    <div class="logo">
+        <img src="logo.png">
+        <a href="https://web.facebook.com/profile.php?id=100083347643871" target="blank">Institute of Information and Communications Technology</a>
     </div>
+    <br>
+    <div class="input-section">
+        <h2>BSIT 1C Attendance</h2>
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId"
+       inputmode="numeric"
+       placeholder="Enter Student ID">
 
+
+        <button id="addStudent">Add Student</button>
+        <button id="saveImageBtn">Save as Image</button>
+    </div>
+    <div class="attendance-sheet" id="attendanceSheet">
+        <div class="print-logo">
+    <img src="logo.png" alt="Logo">
+    <div class="print-title">
+        <strong>Institute of Information and Communications Technology</strong><br>
+        Isabela State University - Roxas Campus
+    </div>
+</div>
     <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
 
+    
     <div class="table-wrapper">
         <table>
             <thead>
@@ -353,14 +391,15 @@ input[type="checkbox"].absent:checked {
                     <th>Time</th>
                 </tr>
             </thead>
-            <tbody id="attendeeList"></tbody>
+            <tbody id="attendeeList">
+                
+            </tbody>
         </table>
     </div>
 </div>
 
-<script src="script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 </body>
 </html>
-
