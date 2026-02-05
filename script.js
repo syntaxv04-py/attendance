@@ -57,89 +57,104 @@
             displayDate.textContent = new Date().toLocaleDateString(); // Current date
         }
 
+        // Populate all students initially, sorted alphabetically by last name
+        function populateStudents() {
+            const students = Object.entries(studentDatabase);
+            students.sort((a, b) => {
+                const lastNameA = a[1].split(' ').pop().toLowerCase();
+                const lastNameB = b[1].split(' ').pop().toLowerCase();
+                return lastNameA.localeCompare(lastNameB);
+            });
+            for (const [id, name] of students) {
+                const tr = document.createElement('tr');
+                tr.dataset.id = id;
+                tr.innerHTML = `
+                    <td>${name}</td>
+                    <td>${id}</td>
+                    <td><input type="checkbox" class="present"></td>
+                    <td><input type="checkbox" class="absent"></td>
+                    <td class="time">-</td>
+                `;
+                attendeeList.appendChild(tr);
+            }
+        }
+
         // Add student event
         function addStudent() {
-    const id = studentIdInput.value.trim();
-    if (!id) {
-        alert('Please enter a student ID.');
-        return;
-    }
-    if (!studentDatabase[id]) {
-        alert('Student ID not found in database.');
-        return;
-    }
+            const id = studentIdInput.value.trim();
+            if (!id) {
+                alert('Please enter a student ID.');
+                return;
+            }
+            const row = attendeeList.querySelector(`tr[data-id="${id}"]`);
+            if (!row) {
+                alert('Student ID not found in database.');
+                return;
+            }
+            const presentCheckbox = row.querySelector('.present');
+            const absentCheckbox = row.querySelector('.absent');
+            const timeCell = row.querySelector('.time');
+            if (!presentCheckbox.checked) {
+                // Mark as present and set time
+                presentCheckbox.checked = true;
+                absentCheckbox.checked = false;
+                timeCell.textContent = new Date().toLocaleTimeString([], {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+            studentIdInput.value = '';
+            updateSheet();
+        }
 
-    const existing = Array.from(attendeeList.children)
-        .some(tr => tr.dataset.id === id);
+        addStudentBtn.addEventListener('click', addStudent);
 
-    if (existing) {
-        alert('Student already added.');
-        return;
-    }
+        // Add student via Enter key (desktop + mobile)
+        studentIdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addStudent();
+            }
+        });
 
-    const tr = document.createElement('tr');
-    tr.dataset.id = id;
-    tr.innerHTML = `
-        <td>${studentDatabase[id]}</td>
-        <td>${id}</td>
-        <td>${new Date().toLocaleTimeString([], {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-        })}</td>
-    `;
-
-    attendeeList.appendChild(tr);
-    studentIdInput.value = '';
-    updateSheet();
-}
-addStudentBtn.addEventListener('click', addStudent);
-
-// Add student via Enter key (desktop + mobile)
-studentIdInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        addStudent();
-    }
-});
-        // Initial update
+        // Initial update and populate
         updateSheet();
+        populateStudents();
+
         const saveImageBtn = document.getElementById('saveImageBtn');
 
-saveImageBtn.addEventListener('click', async () => {
-    const sheet = document.getElementById('attendanceSheet');
+        saveImageBtn.addEventListener('click', async () => {
+            const sheet = document.getElementById('attendanceSheet');
 
-    // save original viewport
-    const originalWidth = document.body.style.width;
+            // Save original styles
+            const originalWidth = document.body.style.width;
+            const originalMinHeight = sheet.style.minHeight;
 
-    // force desktop width
-    document.body.style.width = '210mm';
+             // Force A4-like dimensions for consistent export
+            document.body.style.width = '210mm';
+            sheet.style.minHeight = '297mm';
 
-    document.body.classList.add('print-mode');
-    sheet.classList.add('print-mode');
+            document.body.classList.add('print-mode');
+            sheet.classList.add('print-mode');
 
-    const canvas = await html2canvas(sheet, {
-        scale: 3,
-        backgroundColor: '#ffffff',
-        windowWidth: sheet.scrollWidth
-    });
-
-    document.body.classList.remove('print-mode');
-    sheet.classList.remove('print-mode');
-
-    document.body.style.width = originalWidth;
-
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png', 1.0);
-    link.download = `BSIT_1C_Attendance_${new Date().toISOString().slice(0,10)}.png`;
-    link.click();
-});
+            const canvas = await html2canvas(sheet, {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                windowWidth: sheet.offsetWidth,
+                windowHeight: sheet.offsetHeight
+                });
 
 
-    document.body.classList.remove('print-mode');
-    sheet.classList.remove('print-mode');
+            document.body.classList.remove('print-mode');
+            sheet.classList.remove('print-mode');
 
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png');
-    link.download = `BSIT_1C_Attendance_${new Date().toISOString().slice(0,10)}.png`;
-    link.click();
+            // Restore original styles
+            document.body.style.width = originalWidth;
+            sheet.style.minHeight = originalMinHeight;
+
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.download = `BSIT_1C_Attendance_${new Date().toISOString().slice(0,10)}.png`;
+            link.click();
+        });
