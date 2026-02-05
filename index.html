@@ -74,13 +74,14 @@
     }
 
     .input-section {
-        width: 38%;
+        width: 38%; /* Shortened to fit just enough */
+        height: 260px;
         padding: 24px;
     }
 
     .attendance-sheet {
         width: 210mm;
-        min-height: 297mm;
+        min-height: auto; /* Changed to auto to fit content */
         padding: 24px;
     }
 
@@ -171,6 +172,16 @@
     tr:hover td {
         background: rgba(177,186,196,0.06);
     }
+
+    /* Checkbox styling to match GitHub theme */
+    input[type="checkbox"].present:checked {
+        accent-color: var(--accent);
+    }
+
+    input[type="checkbox"].absent:checked {
+        accent-color: var(--danger);
+    }
+
     @media (max-width: 900px) {
 
     body {
@@ -260,6 +271,33 @@
     width: 100%;
     table-layout: fixed;
 }
+/* Force single-line names in saved image */
+.print-mode table td:first-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.print-mode table {
+    table-layout: fixed;
+}
+
+.print-mode th:first-child,
+.print-mode td:first-child {
+    width: 35%;
+}
+.print-mode table td:first-child {
+    white-space: nowrap;
+    overflow: visible;
+}
+.print-mode table td,
+.print-mode table th {
+    padding: 6px 8px;
+    font-size: 12px;
+}
+.print-mode h2 {
+    margin-bottom: 10px;
+}
+
 
 @media print {
     body {
@@ -307,6 +345,25 @@
     border: none !important;
 }
 
+.present,
+.absent {
+    pointer-events: none;
+}
+/* Present = green check */
+input[type="checkbox"].present:checked {
+    accent-color: var(--accent);
+}
+
+/* Absent = plain empty box always */
+input[type="checkbox"].absent {
+    accent-color: var(--border);
+}
+.input-note {
+    color: var(--muted);  /* light grey text */
+    font-size: 13px;
+    margin-top: 8px;      /* space from the box */
+}
+
 
 </style>
 
@@ -333,8 +390,8 @@
         <div class="print-logo">
     <img src="logo.png" alt="Logo">
     <div class="print-title">
-        Institute of Information and Communications Technology<br>
-        <strong>Isabela State University - Roxas Campus</strong>
+        <strong>Institute of Information and Communications Technology</strong><br>
+        Isabela State University - Roxas Campus
     </div>
 </div>
     <h2>BSIT 1C Attendance <span id="displayDate">-</span></h2>
@@ -346,6 +403,8 @@
                 <tr>
                     <th>Name</th>
                     <th>Student ID</th>
+                    <th>Present</th>
+                    <th>Absent</th>
                     <th>Time</th>
                 </tr>
             </thead>
@@ -361,4 +420,3 @@
 
 </body>
 </html>
-
