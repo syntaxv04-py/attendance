@@ -208,12 +208,24 @@ h2 {
     color: black;
 }
 
-.print-mode #attendanceSheet {
+.attendanceSheet.print-mode {
     width: 210mm;
     min-height: 297mm;
     padding: 24mm;
     background: white;
     color: black;
+}
+
+.attendanceSheet.print-mode {
+    aspect-ratio: auto;
+}
+
+.attendance-sheet.print-mode .table-wrapper {
+    overflow: visible;
+}
+
+.attendance-sheet.print-mode table {
+    font-size: 12px;
 }
 
 .print-mode table {
@@ -380,4 +392,9 @@ h2 {
     padding-top: 12px;
     font-size: 13px;
 }
+
+.attendance-sheet.print-mode * {
+    max-width: none !important;
+}
+
 
