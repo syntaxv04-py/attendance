@@ -112,11 +112,9 @@ Btn.addEventListener('click', async () => {
     sheet.classList.add('print-mode');
 
     await new Promise(r => setTimeout(r, 100));
-
-    const scale = sheet.clientWidth / 210; // scale proportionally (rough guess)
     
     const canvas = await html2canvas(sheet, {
-        scale: 2, // keep at 2 for hi-res
+        scale: 3,
         backgroundColor: '#ffffff',
         useCORS: true
     });
@@ -145,4 +143,5 @@ function updateSummaryCounts() {
     document.getElementById('presentCount').textContent = present;
     document.getElementById('absentCount').textContent = absent;
 }
+
 
