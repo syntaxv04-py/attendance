@@ -1,0 +1,386 @@
+:root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --accent: #238636;
+    --accent-hover: #2ea043;
+    --danger: #f85149;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 60px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo img {
+    width: 40px;
+}
+
+.logo a {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.attendance-sheet {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 210mm;
+    min-height: auto;
+    padding: 24px;
+    aspect-ratio: 210 / 297;
+}
+
+h2 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    background: transparent;
+    color: var(--text);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+th,
+td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+th {
+    font-weight: 600;
+    color: var(--muted);
+}
+
+tr:hover td {
+    background: rgba(177, 186, 196, 0.06);
+}
+
+/* Status checkbox (clean + export-safe) */
+.check {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    appearance: none;
+    background-color: #ffffff;
+    border: 2px solid #30363d;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.check::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 9px;
+    border: solid #ffffff;
+    border-width: 0 2px 2px 0;
+    top: 2px;
+    left: 6px;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.check:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.check:checked::before {
+    opacity: 1;
+}
+
+@keyframes splash {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(40deg);
+        opacity: 0;
+    }
+
+    70% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(40deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1) rotate(40deg);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 900px) {
+    body {
+        padding: 20px;
+    }
+
+    .logo {
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .attendance-sheet {
+        width: 100%;
+        min-height: auto;
+        padding: 16px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        width: 100%;
+    }
+
+    h2 {
+        font-size: 16px;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    table {
+        font-size: 13px;
+    }
+}
+
+.print-logo {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.print-logo img {
+    width: 60px;
+}
+
+.print-title {
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.print-mode {
+    background: white;
+    color: black;
+}
+
+.print-mode #attendanceSheet {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 24mm;
+    margin: 0 auto;
+    background: white;
+    color: black;
+    box-sizing: border-box;
+}
+
+.print-mode table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.print-mode table td:first-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.print-mode th:first-child,
+.print-mode td:first-child {
+    width: 35%;
+}
+
+.print-mode table td {
+    white-space: nowrap;
+    overflow: visible;
+}
+
+.print-mode table td,
+.print-mode table th {
+    padding: 6px 8px;
+    font-size: 12px;
+}
+
+.print-mode h2 {
+    margin-bottom: 10px;
+}
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .print-logo {
+        display: flex;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    table,
+    th,
+    td {
+        border: none !important;
+    }
+}
+
+.print-mode .print-logo {
+    display: flex;
+}
+
+.print-mode table,
+.print-mode th,
+.print-mode td {
+    border: none !important;
+}
+
+.print-mode .no-export {
+    display: none !important;
+}
+
+/* From Uiverse.io by gharsh11032000 */
+.button {
+    position: relative;
+    overflow: hidden;
+    height: 3rem;
+    padding: 0 2rem;
+    border-radius: 1.5rem;
+    background: transparent;
+    background-size: 400%;
+    color: var(--text);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.button:hover::before {
+    transform: scaleY(1);
+}
+
+.button-content {
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleY(0);
+    transform-origin: bottom;
+    width: 100%;
+    height: inherit;
+    border-radius: inherit;
+    background: linear-gradient(
+        82.3deg,
+        rgba(150, 93, 233, 1) 10.8%,
+        rgba(99, 88, 238, 1) 94.3%
+    );
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.button:hover {
+    color: #fff;
+    border-color: transparent;
+}
+
+.button:active {
+    transform: scale(0.95);
+}
+
+@keyframes slide-in-top {
+    0% {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes downloadArrow {
+    0% {
+        margin-top: -7px;
+        opacity: 1;
+    }
+
+    0.001% {
+        margin-top: -15px;
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        margin-top: 0;
+        opacity: 0.4;
+    }
+}
+
+.export-summary {
+    display: none;
+}
+
+.print-mode .export-summary {
+    display: table-footer-group;
+}
+
+.summary-cell {
+    text-align: right;
+    padding-top: 12px;
+    font-size: 13px;
+}
