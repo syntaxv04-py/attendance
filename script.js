@@ -97,7 +97,6 @@ function populateStudents() {
     }
 }
 
-// Initial update and populate
 updateSheet();
 populateStudents();
 
@@ -110,7 +109,11 @@ Btn.addEventListener('click', async () => {
 
     updateSummaryCounts();
 
-    sheet.classList.add('force-desktop');
+    const originalWidth = sheet.style.width;
+    const originalMaxWidth = sheet.style.maxWidth;
+
+    sheet.style.width = '1000px';
+    sheet.style.maxWidth = '1000px';
     sheet.classList.add('print-mode');
 
     await new Promise(r => setTimeout(r, 300));
@@ -122,7 +125,8 @@ Btn.addEventListener('click', async () => {
     });
 
     sheet.classList.remove('print-mode');
-    sheet.classList.remove('force-desktop');
+    sheet.style.width = originalWidth;
+    sheet.style.maxWidth = originalMaxWidth;
 
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
@@ -131,7 +135,6 @@ Btn.addEventListener('click', async () => {
 
     Btn.disabled = false;
 });
-
 
 function updateSummaryCounts() {
     const checkboxes = document.querySelectorAll('.status-check');
@@ -147,6 +150,8 @@ function updateSummaryCounts() {
     document.getElementById('presentCount').textContent = present;
     document.getElementById('absentCount').textContent = absent;
 }
+
+
 
 
 
