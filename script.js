@@ -109,10 +109,12 @@ Btn.addEventListener('click', async () => {
     const sheet = document.getElementById('attendanceSheet');
 
     updateSummaryCounts();
+
+    sheet.classList.add('force-desktop');
     sheet.classList.add('print-mode');
 
-    await new Promise(r => setTimeout(r, 100));
-    
+    await new Promise(r => setTimeout(r, 300));
+
     const canvas = await html2canvas(sheet, {
         scale: 3,
         backgroundColor: '#ffffff',
@@ -120,6 +122,7 @@ Btn.addEventListener('click', async () => {
     });
 
     sheet.classList.remove('print-mode');
+    sheet.classList.remove('force-desktop');
 
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
@@ -128,6 +131,7 @@ Btn.addEventListener('click', async () => {
 
     Btn.disabled = false;
 });
+
 
 function updateSummaryCounts() {
     const checkboxes = document.querySelectorAll('.status-check');
@@ -143,5 +147,6 @@ function updateSummaryCounts() {
     document.getElementById('presentCount').textContent = present;
     document.getElementById('absentCount').textContent = absent;
 }
+
 
 
