@@ -48,8 +48,8 @@ body {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
-    width: 210mm;
-    min-height: auto;
+    width: 100%;
+    max-width: 1000px;
     padding: 24px;
     aspect-ratio: 210 / 297;
 }
@@ -95,8 +95,6 @@ th {
 tr:hover td {
     background: rgba(177, 186, 196, 0.06);
 }
-
-/* Status checkbox (clean + export-safe) */
 .check {
     position: relative;
     width: 18px;
@@ -163,12 +161,12 @@ tr:hover td {
         min-height: auto;
         padding: 16px;
     }
-
+    
     .table-wrapper {
-        overflow-x: auto;
-        width: 100%;
-    }
-
+    overflow-x: auto;
+    width: 100%;
+}
+    
     h2 {
         font-size: 16px;
         flex-direction: column;
@@ -214,10 +212,8 @@ h2 {
     width: 210mm;
     min-height: 297mm;
     padding: 24mm;
-    margin: 0 auto;
     background: white;
     color: black;
-    box-sizing: border-box;
 }
 
 .print-mode table {
@@ -384,3 +380,4 @@ h2 {
     padding-top: 12px;
     font-size: 13px;
 }
+
