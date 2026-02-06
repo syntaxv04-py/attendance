@@ -102,6 +102,8 @@ populateStudents();
 
 const Btn = document.getElementById('buttonDownloadBtn');
 
+const Btn = document.getElementById('buttonDownloadBtn');
+
 Btn.addEventListener('click', async () => {
     Btn.disabled = true;
 
@@ -109,15 +111,11 @@ Btn.addEventListener('click', async () => {
 
     updateSummaryCounts();
 
-    // SAVE ORIGINAL STYLES
-    const originalBodyWidth = document.body.style.width;
-    const originalSheetMinHeight = sheet.style.minHeight;
+    const originalWidth = sheet.style.width;
+    const originalMaxWidth = sheet.style.maxWidth;
 
-    // 🔑 FORCE A4 / DESKTOP RENDER (THIS IS THE KEY DIFFERENCE)
-    document.body.style.width = '210mm';
-    sheet.style.minHeight = '297mm';
-
-    document.body.classList.add('print-mode');
+    sheet.style.width = '1000px';
+    sheet.style.maxWidth = '1000px';
     sheet.classList.add('print-mode');
 
     await new Promise(r => setTimeout(r, 300));
@@ -125,16 +123,12 @@ Btn.addEventListener('click', async () => {
     const canvas = await html2canvas(sheet, {
         scale: 3,
         backgroundColor: '#ffffff',
-        windowWidth: sheet.offsetWidth,
-        windowHeight: sheet.offsetHeight
+        useCORS: true
     });
 
-    // RESTORE
-    document.body.classList.remove('print-mode');
     sheet.classList.remove('print-mode');
-
-    document.body.style.width = originalBodyWidth;
-    sheet.style.minHeight = originalSheetMinHeight;
+    sheet.style.width = originalWidth;
+    sheet.style.maxWidth = originalMaxWidth;
 
     const link = document.createElement('a');
     link.href = canvas.toDataURL('image/png');
@@ -158,6 +152,7 @@ function updateSummaryCounts() {
     document.getElementById('presentCount').textContent = present;
     document.getElementById('absentCount').textContent = absent;
 }
+
 
 
 
