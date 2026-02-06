@@ -397,4 +397,10 @@ h2 {
     max-width: none !important;
 }
 
+.attendance-sheet.force-desktop {
+    width: 1000px !important;
+}
 
+.attendance-sheet.force-desktop .table-wrapper {
+    overflow: visible !important;
+}
