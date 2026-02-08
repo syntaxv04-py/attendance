@@ -90,7 +90,7 @@ td {
 th:nth-child(3),
 th:nth-child(4),
 td:nth-child(3),
-td:nth-child(4), {
+td:nth-child(4) {
     text-align: center;
 }
 
@@ -160,7 +160,7 @@ tr:hover td {
 
 @media (max-width: 900px) {
     .attendance-sheet {
-        aspect-ratioL auto;
+        aspect-ratio: auto;
     }
 }
 
@@ -421,4 +421,5 @@ h2 {
 .attendance-sheet.force-desktop .table-wrapper {
     overflow: visible !important;
 }
+
 
