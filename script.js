@@ -43,6 +43,7 @@ const studentDatabase = {
     "25-0134": "Aironpol Buncag",
     "25-0927": "Ryan Jonrick Bautista",
     "25-0942": "Adrian L. Ramos",
+    "25-0328": "Jeremy Besa",
 };
 
 // Elements
@@ -150,3 +151,4 @@ function updateSummaryCounts() {
     document.getElementById('presentCount').textContent = present;
     document.getElementById('absentCount').textContent = absent;
 }
+
