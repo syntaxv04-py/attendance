@@ -44,6 +44,7 @@ const studentDatabase = {
     "25-0927": "Ryan Jonrick Bautista",
     "25-0942": "Adrian L. Ramos",
     "25-0328": "Jeremy Besa",
+    "25-0294": "Christian Jeff Bricia",
 };
 
 // Elements
